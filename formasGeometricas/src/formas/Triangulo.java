@@ -1,7 +1,7 @@
 package formas;
 import java.lang.Math;
 
-public class Triangulo {
+public class Triangulo extends FormaGeometrica{
 	
 	double lado1;
 	double lado2;

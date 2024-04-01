@@ -7,11 +7,19 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) {
-		Cuadrado cuadrado = new Cuadrado(5);
-		Triangulo triangulo = new Triangulo(5,5,8);
-		Circulo circulo = new Circulo(4);
+		FormaGeometrica cuadrado = new Cuadrado(5);
+		FormaGeometrica triangulo = new Triangulo(2,2,2);
+		FormaGeometrica circulo = new Circulo(4);
 		
+		List<FormaGeometrica> formas = new ArrayList<>();
+		formas.add(circulo);
+		formas.add(triangulo);
+		formas.add(cuadrado);
 		
+		for (FormaGeometrica forma: formas) {
+			System.out.println(forma.calcularArea());
+			System.out.println(forma.calcularPerimetro());
+		}
 	}
 
 }

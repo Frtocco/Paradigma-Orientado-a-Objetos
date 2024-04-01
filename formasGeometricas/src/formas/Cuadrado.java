@@ -1,6 +1,6 @@
 package formas;
 
-public class Cuadrado {
+public class Cuadrado extends FormaGeometrica{
 	
 	double lado;
 	
