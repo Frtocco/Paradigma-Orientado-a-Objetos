@@ -5,5 +5,5 @@
  * @author franc
  *
  */
-module formasGeometricas {
+module teg {
 }
