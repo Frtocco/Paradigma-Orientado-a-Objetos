@@ -1,0 +1,26 @@
+@startuml
+actor Main
+
+Main -> Banco: crearCajaAhorro(int nroCliente, Moneda moneda)
+activate Banco
+
+Banco -> Banco: buscarCliente(nroCliente): Cliente
+Banco -> Cliente: crearCajaAhorro(Moneda moneda): Cuenta
+activate Cliente
+
+Cliente -> Cliente: verificarActivo(): boolean
+alt cliente activo
+    Cliente -> CajaAhorro: new CajaAhorro(Cliente)
+    Cliente -> Cliente: agregarCuenta(Cuenta)
+    Cliente --> Banco: cuenta
+    
+    Banco -> Banco: agregarCuenta(Cuenta)
+    Banco --> Main: cuenta
+
+else cliente inactivo
+    Cliente --> Banco: lanzar excepcion
+end
+
+deactivate Cliente
+deactivate Banco
+@enduml

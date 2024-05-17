@@ -1,0 +1,34 @@
+@startuml
+actor Main
+
+Main -> Banco: agregarTitularACuenta(int nroCliente, String nroCuenta)
+activate Banco
+
+Banco -> Banco: buscarCliente(nroCliente): Cliente
+Banco -> Banco: buscarCuenta(nroCuenta): Cuenta
+
+Banco -> Cliente: adherirACuenta(Cuenta cuenta)
+activate Cliente
+
+    Cliente -> Cliente: verificarActivo(): boolean
+    alt cliente activo
+        Cliente -> Cuenta: agregarTitular(Cliente)
+        activate Cuenta
+        Cuenta -> Cuenta: verificarActiva(): boolean
+        alt cuenta activa
+          Cuenta -> Cuenta: agregarCliente()
+        else cuenta inactiva
+          Cuenta --> Cliente: lanzar excepcion
+        end
+        deactivate Cuenta
+        Cliente -> Cliente: agregarCuenta(Cuenta)
+    Cliente --> Banco: void
+    Banco --> Main: cuenta
+
+    else cliente inactivo
+
+        Cliente --> Banco: lanzar excepcion
+    end
+deactivate cliente
+deactivate Banco
+@enduml
