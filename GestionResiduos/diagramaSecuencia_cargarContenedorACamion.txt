@@ -1,0 +1,60 @@
+@startuml
+actor main
+
+main -> GestorDeResiduos: cargarContenedorACamion(camionId: int, contenedorId: int): void
+activate GestorDeResiduos
+
+   GestorDeResiduos -> GestorDeResiduos: buscarCamion(camionId: int): Camion
+   activate GestorDeResiduos
+       loop por cada camion
+          GestorDeResiduos -> Camion: sosCamion(camionId: int): boolean
+          activate Camion
+          GestorDeResiduos <-- Camion: true
+          deactivate Camion
+       end loop
+   deactivate GestorDeResiduos
+
+   GestorDeResiduos -> GestorDeResiduos: buscarContenedor(contenedorId: int): Camion
+   activate GestorDeResiduos
+       loop por cada contenedor
+          GestorDeResiduos -> Contenedor: sosContenedor(contenedorId: int): boolean     
+          activate Contenedor
+          GestorDeResiduos <-- Contenedor: true
+          deactivate Contenedor
+       end loop
+   deactivate GestorDeResiduos
+
+   GestorDeResiduos -> CamionHumedo: cargarContenedor(contenedor: Contenedor): void
+   activate CamionHumedo
+       CamionHumedo -> CamionHumedo: validarPosicionDeContenedor(contenedor: Contenedor)
+       activate CamionHumedo
+       CamionHumedo -> Contenedor: estasEnPosicion(posicionX: int, posicionY: int): boolean
+       activate Contenedor
+       CamionHumedo <-- Contenedor: true
+       deactivate Contenedor
+       deactivate CamionHumedo
+       alt si estan en la misma posicion
+           CamionHumedo -> ContenedorHumedo: cargarEnCamionHumedo(camionHumedo: CamionHumedo): void
+           activate ContenedorHumedo
+               ContenedorHumedo -> ContenedorHumedo: estasLleno(): boolean
+               alt contenedor esta lleno  
+                   ContenedorHumedo -> Camion: descargarContenedor(contenedor: Contenedor): void
+                   activate Camion
+                         Camion -> Contenedor: getCapacidadOcupada(): int
+                         alt camion tiene capacidad disponible
+                              Camion -> Camion: cargarResiduos(cantidad:int): void
+                              Camion -> Contenedor: vaciar(): void
+                         else
+                              Camion --> main: CamionSinCapacidadException
+                         end alt
+                   deactivate Camion        
+               else
+                   Contenedor --> main: ContenedorNoEstaLlenoException
+               end alt
+           deactivate ContenedorHumedo
+       else 
+           CamionHumedo --> main: CamionYContnedorEnDiferentePosicionException
+       end alt
+   deactivate CamionHumedo
+deactivate GestorDeResiduos
+@enduml

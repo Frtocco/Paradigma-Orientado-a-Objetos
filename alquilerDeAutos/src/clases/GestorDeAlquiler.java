@@ -5,7 +5,7 @@ import clases.Operacion;
 import clases.Cliente;
 import java.util.List;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 
 public class GestorDeAlquiler {
 	
@@ -13,10 +13,19 @@ public class GestorDeAlquiler {
 	private List<Cliente> clientes = new ArrayList<>();
 	private List<Operacion> operaciones = new ArrayList<>();
 	
+	public GestorDeAlquiler(){
+		this.vehiculos = new ArrayList<>();
+		this.clientes = new ArrayList<>();
+		this.operaciones = new ArrayList<>();
+	}
+
 	public Operacion alquilar(String idCliente, String idVehiculo, Date fechaDesde, Date fechaHasta) {
 		Cliente cliente = buscarCliente(idCliente);
 		Vehiculo vehiculo = buscarVehiculo(idVehiculo);
-		return cliente.alquilar(vehiculo, fechaDesde, fechaHasta);
+		Operacion operacion = cliente.alquilar(vehiculo, fechaDesde, fechaHasta);
+		operacion.setCliente(cliente);
+		operaciones.add(operacion);
+		return operacion;
 	}
 
 	private Vehiculo buscarVehiculo(String idVehiculo) {

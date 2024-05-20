@@ -1,6 +1,6 @@
 package clases;
 import java.util.Random;
-import java.sql.Date;
+import java.util.Date;
 
 public class Cliente {
 	private String nombreCliente;
@@ -26,7 +26,8 @@ public class Cliente {
 	}
 	
 	public Operacion alquilar(Vehiculo vehiculo, Date fechaDesde, Date fechaHasta) {
-		
+		Operacion operacion = new Operacion(vehiculo,fechaDesde,fechaHasta);
+		return(operacion);
 	}
 	
 }
