@@ -1,0 +1,41 @@
+@startuml
+actor Main
+
+Main -> Banco: extraer(int nroCliente, String nroCuenta, float monto)
+activate Banco
+
+Banco -> Banco: buscarCliente(nroCliente): Cliente
+Banco -> Cliente: extraer(String nroCuenta, float monto): Operacion
+activate Cliente
+
+Cliente -> Cliente: verificarActivo()
+alt cliente activo
+    Cliente -> Cliente: buscarCuenta(nroCuenta)
+    
+    Cliente -> CuentaCorriente: extraer(Cliente cliente, float monto): Operacion
+    activate CuentaCorriente
+    CuentaCorriente -> CuentaCorriente: calcularNuevoSaldo(monto): float
+    opt Saldo negativo
+        CuentaCorriente -> CuentaCorriente: verificarDescubiertoValido(nuevoSaldo): boolean
+        activate CuentaCorriente
+        CuentaCorriente -> Moneda: permiteDescubierto: boolean
+        opt descubierto invalido
+            CuentaCorriente --> Cliente: lanzar excepcion
+        end
+        deactivate CuentaCorriente
+    end
+    CuentaCorriente -> Operacion: new Operacion(Cliente, float saldoAnterior, float nuevoSaldo, TipoOperacion op = Extraccion)
+    CuentaCorriente -> CuentaCorriente: agregarOperacion(operacion)
+    CuentaCorriente --> Cliente: operacion
+    
+    deactivate CuentaCorriente
+    Cliente --> Banco: operacion
+    deactivate Cliente
+    Banco --> Main: operacion
+
+else cliente | cuenta inactivos
+    Banco --> Main: lanzar excepcion
+end
+
+deactivate Banco
+@enduml

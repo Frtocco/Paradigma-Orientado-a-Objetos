@@ -1,0 +1,104 @@
+@startuml
+class GestorDeResiduos {
+ - {static} instancia: GestorDeResiduos
+ - camiones: List<Camion>
+ - contenedores: List<Contenedor>
+ - estaciones: List<Estacion>
+ + {static} getInstancia(): GestorDeResiduos
+
+ + agregarCamionHumedo(posicionX: int, posicionY: int): CamionHumedo
+ + agregarCamionReciclable(posicionX: int, posicionY: int): CamionReciclable
+ + agregarCamionMultiuso(posicionX: int, posicionY: int): CamionMultiuso
+ + agregarContenedorHumedo(posicionX: int, posicionY: int): ContenedorHumedo
+ + agregarContenedorReciclable(posicionX: int, posicionY: int): ContenedorReciclable
+ + agregarEstacion(capacidad:int): Estacion
+
+ + cargarContenedorACamion(camionId: int, contenedorId: int): void
+ + descargarCamionEnEstacion(camionId:int, estacionId: int): void
+
+ - buscarContenedor(contenedorId: int): Contenedor
+ - buscarCamion(camionId: int): Camion
+ - buscarEstacion(estacionId: int): Estacion
+}
+ 
+abstract class Camion {
+ - id: int
+ - capacidadOcupada: int
+ - posicionX: int
+ - posicionY: int
+ # Camion(posicionX: int, posicionY: int)
+ +{abstract} cargarContenedor(contenedor: Contenedor): void
+ +{abstract} getCapacidadMaxima(): int
+
+ + vaciar() void
+ + descargarContenedor(contenedor: Contenedor): void
+
+ # validarPosicionDeContenedor(contenedor Contenedor): void
+ - cargarResiduos(cantidad: int): void
+ - puedoCargarCantidadResiduos(cantidadResiduos: int): boolean
+}
+ 
+class CamionHumedo extends Camion {
+ + CamionHumedo(posicionX: int, posicionY: int)
+ + cargarContenedor(contenedor: Contenedor): void
+ + getCapacidadMaxima(): int
+}
+ 
+class CamionReciclable extends Camion{
+ + CamionReciclable(posicionX: int, posicionY: int)
+ + cargarContenedor(contenedor: Contenedor): void 
+ + getCapacidadMaxima(): int
+}
+ 
+class CamionMultiresiduo extends Camion{
+ + CamionMultiresiduo(posicionX: int, posicionY: int)
+ + cargarContenedor(contenedor: Contenedor): void
+ + getCapacidadMaxima(): int
+}
+
+abstract class Contenedor {
+ - id: int
+ - capacidadOcupada: int
+ - posicionX: int
+ - posicionY: int
+
+ # Contenedor(posicionX: int, posicionX: int)
+ + cargarEnCamionReciclable(camionReciclable: CamionReciclable): void
+ + cargarEnCamionHumedo(camionHumedo: CamionHumedo): void
+ + cargarEnCamionMultiuso(camionMultiuso: CamionMultiuso): void
+ + vaciar(): void
+ - estasLleno(): boolean
+ # cargarCamion(camion: Camion): void
+ # {abstract} getCapacidadMaxima(): int
+}
+ 
+class ContenedorResiduoReciclable extends Contenedor{
+ + ContenedorResiduoReciclable(posicionX: int, posicionX: int) 
+ + cargarEnCamionReciclable(camionReciclable: CamionReciclable): void
+ - getCapacidadMaxima(): int
+}
+ 
+class ContenedorResiduoHumedo extends Contenedor{
+ + ContenedorResiduoHumedo(posicionX: int, posicionX: int) 
+ + cargarEnCamionHumedo(camionHumedo: CamionHumedo): void
+ - getCapacidadMaxima(): int
+}
+ 
+class Estacion {
+ - capacidadTotal: int
+ - capacidadOcupada: int
+
+ + Estacion(capacidad:int)
+ + cargarContenido(camion: Camion): void
+ - agregarContenido(contenidoCamion: int): void
+ - puedoCargarCantidadResiduos(contenidoCamion: int): boolean
+}
+ 
+ 
+GestorDeResiduos *-- "*" Camion
+GestorDeResiduos *-- "*" Estacion 
+GestorDeResiduos *-- "*" Contenedor
+
+Camion "Conocimiento simple" <--> Contenedor
+Camion "Conocimiento simple" <-->  Estacion
+@enduml

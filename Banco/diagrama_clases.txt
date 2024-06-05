@@ -1,0 +1,111 @@
+@startuml
+class Banco {
+    - {static} instancia: Banco
+    - clientes: List<Cliente>
+    - cuentas: List<Cuenta>
+
+    + {static} getInstance(): Banco
+
+    + crearCajaAhorro(int nroCliente, Moneda moneda): Cuenta
+    + crearCuentaCorriente(int nroCliente, Moneda moneda): Cuenta
+    + crearCliente(String nombre, String documento, String domicilioLegal, String domicilioPostal, boolean deseaResumenDigital): Cliente
+    + extraer(int nroCliente, String nroCuenta, float monto): Operacion
+    + depositar(int nroCliente, String nroCuenta, float monto): Operacion
+    + saldoDeCuenta(String nroCuenta): float
+    + extraer(int nroCliente, String nroCuenta, float monto): Operacion
+    + disponibleExtraccion(String nroCuenta): float
+}
+
+Banco *-down-> Cliente
+Banco *-down-> Cuenta
+
+class Cliente {
+    - {static} contadorID: int
+    - nroCliente: int
+    - nroDocumento: String
+    - nombre: String
+    - docimicilioLegal: String
+    - domicilioPostal: String
+    - deseaResumenDigital: boolean
+    - cuentas: List<Cuenta>
+    - estado: EstadoCliente
+
+    + crearCajaAhorro(Moneda moneda): Cuenta
+    + crearCuentaCorriente(Moneda moneda): Cuenta
+    + adherirACuenta(Cuenta cuenta): void
+    - verificarActivo(): boolean
+}
+
+enum EstadoCliente {
+  ACTIVO
+  INACTIVO
+}
+
+Cliente --> EstadoCliente
+Cliente o-> Cuenta
+
+abstract class Cuenta {
+    - {static} contadorID: int
+    # identificador: String
+    # clientes: List<Cliente>
+    # operaciones: List<Operacion>
+    # moneda: Moneda
+    # estado: EstadoCuenta
+    # saldo: float
+    # importeMantenimiento: float
+
+    + agregarTitular(Cliente): void
+    + {abstract} extraer(Cliente cliente, float monto): Operacion
+    + {abstract} depositar(Cliente cliente, float monto): Operacion
+}
+
+enum EstadoCuenta {
+  ACTIVA
+  INACTIVA
+}
+
+class CuentaCorriente {
+    - limiteDescubierto: float
+    - tasaDescubierto: float
+    + extraer(Cliente cliente, float monto): Operacion
+    + depositar(Cliente cliente, float monto): Operacion
+    - calcularNuevoSaldo(float monto): float
+    - verificarDescubiertoValido(float nuevoMonto): float
+}
+
+
+class CajaAhorro {
+   - tasaInteres: float
+   + extraer(Cliente cliente, float monto): Operacion
+   + depositar(Cliente cliente, float monto): Operacion
+}
+
+enum Moneda {
+PESO
+DOLAR
+- permiteGiroDescubierto: boolean
++ permiteGiroDescubierto(): boolean
+}
+
+Cuenta <|-- CuentaCorriente
+Cuenta <|-- CajaAhorro
+Cuenta --> EstadoCuenta
+Cuenta --> Moneda
+Cuenta *-> Operacion
+
+class Operacion {
+- cliente: Cliente
+- tipo: TipoOperacion
+- fecha: Date
+- saldoAnterior: float
+- monto: float
+}
+
+enum TipoOperacion {
+  EXTRACCION
+  DEPOSITO
+}
+
+Operacion --> TipoOperacion
+Operacion o-> Cliente
+@enduml
