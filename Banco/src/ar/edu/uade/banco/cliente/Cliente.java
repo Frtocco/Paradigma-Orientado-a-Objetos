@@ -105,4 +105,9 @@ public class Cliente {
         return cuenta.depositar(monto);
     	
     }
+
+    public float consultarSaldo(String idCuenta){
+        Cuenta cuenta = buscarCuenta(idCuenta);
+        return cuenta.getSaldo();
+    }
 }

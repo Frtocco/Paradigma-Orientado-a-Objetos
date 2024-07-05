@@ -52,5 +52,9 @@ public abstract class Cuenta {
 
     public abstract Operacion extraer(float monto) throws DescubiertoInvalidoException, CuentaInactivaException;
     public abstract Operacion depositar(float monto) throws DescubiertoInvalidoException, CuentaInactivaException;
+    public float getSaldo(){
+        return this.saldo;
+    }
+
     
 }
