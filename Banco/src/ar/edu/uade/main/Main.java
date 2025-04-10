@@ -2,12 +2,7 @@ package ar.edu.uade.main;
 
 import ar.edu.uade.banco.Banco;
 import ar.edu.uade.banco.cliente.Cliente;
-import ar.edu.uade.banco.exceptions.ClienteInactivoException;
-import ar.edu.uade.banco.exceptions.ClienteNoEncontradoException;
-import ar.edu.uade.banco.exceptions.CuentaInactivaException;
-import ar.edu.uade.banco.exceptions.CuentaNoEncontradaException;
-import ar.edu.uade.banco.exceptions.DescubiertoInvalidoException;
-import ar.edu.uade.banco.exceptions.DomicilioPostalRequeridoException;
+import ar.edu.uade.banco.exceptions.*;
 
 public class Main {
     public static void main(String[] args) {

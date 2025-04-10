@@ -53,7 +53,7 @@ public class CuentaCorriente extends Cuenta {
     
 
 	@Override
-	public Operacion depositar(float monto) throws DescubiertoInvalidoException, CuentaInactivaException {
+	public Operacion depositar(float monto) throws CuentaInactivaException {
 		
 		if (this.estado != EstadoCuenta.ACTIVA) {
             throw new CuentaInactivaException("La cuenta no esta activa. Nro Cuenta: " + this.nroCuenta);
@@ -63,9 +63,7 @@ public class CuentaCorriente extends Cuenta {
 		float saldoAnterior = this.saldo;
 		this.saldo = nuevoSaldo;
 		
-		Operacion operacion = new Operacion(null, TipoOperacion.DEPOSITO, monto, saldoAnterior);
-		
-		return operacion;
+		return new Operacion(null, TipoOperacion.DEPOSITO, monto, saldoAnterior);
 	}
 
    

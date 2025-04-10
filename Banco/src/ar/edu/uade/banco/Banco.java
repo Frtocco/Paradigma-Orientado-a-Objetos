@@ -64,5 +64,10 @@ public class Banco {
         }
     	return cliente.depositar(nroCuenta, monto);
     }
+
+    public float consultarSaldo(int idCliente, String idCuenta) throws ClienteNoEncontradoException, CuentaNoEncontradaException{
+        Cliente cliente = buscarCliente(idCliente);
+        return cliente.consultarSaldo(idCuenta);
+    }
     
 }
