@@ -1,4 +1,4 @@
-package ar.edu.uade.banco.cliente;
+package ar.edu.uade.banco.exceptions;
 
 public class DomicilioPostalRequeridoException extends Exception {
 
